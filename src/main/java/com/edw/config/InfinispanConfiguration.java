@@ -3,6 +3,7 @@ package com.edw.config;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
+import org.infinispan.remoting.transport.jgroups.JGroupsTransport;
 import org.infinispan.spring.starter.embedded.InfinispanCacheConfigurer;
 import org.infinispan.spring.starter.embedded.InfinispanGlobalConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +39,7 @@ public class InfinispanConfiguration {
     public InfinispanGlobalConfigurer globalConfigurer() {
         return () -> {
             final GlobalConfiguration globalConfiguration = new GlobalConfigurationBuilder()
+                    .clusteredDefault().transport().addProperty(JGroupsTransport.CONFIGURATION_FILE, "jgroups.xml")
                     .metrics().gauges(true).histograms(true)
                     .build();
             return globalConfiguration;
