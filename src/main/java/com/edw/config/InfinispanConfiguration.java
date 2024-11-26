@@ -26,9 +26,11 @@ public class InfinispanConfiguration {
     public InfinispanCacheConfigurer infinispanCacheConfigurer() {
         return manager -> {
             org.infinispan.configuration.cache.Configuration userCacheConfig = new ConfigurationBuilder()
+                    .indexing().enable()
+                    .addIndexedEntities("com.edw.bean.User")
                     .build();
 
-            manager.defineConfiguration("my-cache", userCacheConfig);
+            manager.defineConfiguration("user-cache", userCacheConfig);
         };
     }
 
