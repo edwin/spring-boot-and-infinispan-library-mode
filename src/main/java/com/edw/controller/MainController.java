@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -53,4 +54,14 @@ public class MainController {
                 .build());
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping(path = "/add-user")
+    public ResponseEntity addUsers(@RequestParam String name,
+                                   @RequestParam Integer age,
+                                   @RequestParam String address,
+                                   @RequestParam String province) {
+        cacheManager.getCache("user-cache").put(name, new User(name, age, address, province));
+        return ResponseEntity.ok((User) cacheManager.getCache("user-cache").getOrDefault(name, new User()));
+    }
+
 }

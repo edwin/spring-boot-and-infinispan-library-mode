@@ -1,8 +1,9 @@
 package com.edw.config;
 
+import com.edw.bean.User;
+import org.infinispan.commons.marshall.JavaSerializationMarshaller;
 import org.infinispan.configuration.cache.CacheMode;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
-import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.remoting.transport.jgroups.JGroupsTransport;
 import org.infinispan.spring.starter.embedded.InfinispanCacheConfigurer;
@@ -43,11 +44,17 @@ public class InfinispanConfiguration {
     @Bean
     public InfinispanGlobalConfigurer globalConfigurer() {
         return () -> {
-            final GlobalConfiguration globalConfiguration = new GlobalConfigurationBuilder()
-                    .clusteredDefault().transport().addProperty(JGroupsTransport.CONFIGURATION_FILE, "jgroups.xml")
-                    .metrics().gauges(true).histograms(true)
-                    .build();
-            return globalConfiguration;
+            final GlobalConfigurationBuilder globalConfiguration = new GlobalConfigurationBuilder();
+
+            globalConfiguration.clusteredDefault().transport()
+                    .addProperty(JGroupsTransport.CONFIGURATION_FILE, "jgroups.xml")
+                    .clusterName("my-cluster")
+                    .metrics().gauges(true).histograms(true);
+
+            globalConfiguration.serialization()
+                    .marshaller(new JavaSerializationMarshaller()).allowList().addRegexps(".*").addClasses(User.class);
+
+            return globalConfiguration.build();
         };
     }
 }
