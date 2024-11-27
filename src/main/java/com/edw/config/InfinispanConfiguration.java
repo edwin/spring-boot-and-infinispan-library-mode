@@ -48,11 +48,14 @@ public class InfinispanConfiguration {
 
             globalConfiguration.clusteredDefault().transport()
                     .addProperty(JGroupsTransport.CONFIGURATION_FILE, "jgroups.xml")
-                    .clusterName("my-cluster")
-                    .metrics().gauges(true).histograms(true);
+                    .clusterName("my-cluster");
 
             globalConfiguration.serialization()
-                    .marshaller(new JavaSerializationMarshaller()).allowList().addRegexps(".*").addClasses(User.class);
+                    .marshaller(new JavaSerializationMarshaller()).allowList().addClasses(User.class);
+
+            globalConfiguration.metrics()
+                    .gauges(true).histograms(true)
+                    .enabled();
 
             return globalConfiguration.build();
         };
