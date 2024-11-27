@@ -1,5 +1,6 @@
 package com.edw.config;
 
+import org.infinispan.configuration.cache.CacheMode;
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.configuration.global.GlobalConfigurationBuilder;
@@ -29,6 +30,10 @@ public class InfinispanConfiguration {
             org.infinispan.configuration.cache.Configuration userCacheConfig = new ConfigurationBuilder()
                     .indexing().enable()
                     .addIndexedEntities("com.edw.bean.User")
+                    .clustering()
+                    .cacheMode(CacheMode.DIST_SYNC)
+                        .hash()
+                        .numOwners(2)
                     .build();
 
             manager.defineConfiguration("user-cache", userCacheConfig);
