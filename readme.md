@@ -55,3 +55,16 @@ GMS: address=DESKTOP-8NNFTMF-65407, cluster=ISPN, physical address=127.0.0.1:616
 27-11-2024 10:58:43 [RMI TCP Connection(1)-192.168.1.7] INFO  org.springframework.web.servlet.DispatcherServlet.initServletBean - Initializing Servlet 'dispatcherServlet'
 27-11-2024 10:58:43 [RMI TCP Connection(1)-192.168.1.7] INFO  org.springframework.web.servlet.DispatcherServlet.initServletBean - Completed initialization in 1 ms
 ```
+
+## API
+Add Data
+```
+$ curl "http://localhost:8081/add-user?name=edwin&age=19&address=ciledug&province=banten"
+{"name":"edwin","age":19,"address":"ciledug","province":"banten"} 
+```
+
+Get Data
+```
+$ curl http://localhost:8081/get-user/edwin
+{"name":"edwin","age":19,"address":"ciledug","province":"banten"} 
+```
