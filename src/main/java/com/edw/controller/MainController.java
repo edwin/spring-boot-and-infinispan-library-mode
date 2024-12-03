@@ -45,13 +45,16 @@ public class MainController {
     public ResponseEntity rebuild() {
         cacheManager.removeCache("user-cache");
         cacheManager.createCache("user-cache", new ConfigurationBuilder()
-                .indexing().enable()
-                .addIndexedEntities("com.edw.bean.User")
-                .clustering()
-                .cacheMode(CacheMode.DIST_SYNC)
-                    .hash()
-                    .numOwners(2)
-                .build());
+                    .statistics()
+                        .enable()
+                    .indexing()
+                        .enable()
+                        .addIndexedEntities("com.edw.bean.User")
+                    .clustering()
+                        .cacheMode(CacheMode.DIST_SYNC)
+                            .hash()
+                            .numOwners(2).build()
+        );
         return ResponseEntity.ok().build();
     }
 

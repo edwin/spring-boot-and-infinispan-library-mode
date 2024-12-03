@@ -29,12 +29,15 @@ public class InfinispanConfiguration {
     public InfinispanCacheConfigurer infinispanCacheConfigurer() {
         return manager -> {
             org.infinispan.configuration.cache.Configuration userCacheConfig = new ConfigurationBuilder()
-                    .indexing().enable()
-                    .addIndexedEntities("com.edw.bean.User")
+                    .statistics()
+                        .enable()
+                    .indexing()
+                        .enable()
+                        .addIndexedEntities("com.edw.bean.User")
                     .clustering()
-                    .cacheMode(CacheMode.DIST_SYNC)
-                        .hash()
-                        .numOwners(2)
+                        .cacheMode(CacheMode.DIST_SYNC)
+                            .hash()
+                            .numOwners(2)
                     .build();
 
             manager.defineConfiguration("user-cache", userCacheConfig);
